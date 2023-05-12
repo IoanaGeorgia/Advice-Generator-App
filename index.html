@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+  <title>Frontend Mentor | Advice generator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    :root {
+      --lightCyan: hsl(193, 38%, 86%);
+      --neonGreen: hsl(150, 100%, 66%);
+      --grayishBlue: hsl(217, 19%, 38%);
+      --darkGrayishBlue: hsl(217, 19%, 24%);
+      --darkBlue: hsl(218, 23%, 16%);
+      --fontSize: 28px;
+      --fontWeight: 800;
+
+    }
+
+    * {
+      padding: 0px;
+      margin: 0px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: var(--darkBlue);
+
+    }
+
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 98vh;
+    }
+
+    .mainWrapper {
+      width: 25%;
+      height: 50%;
+      padding-left: 5%;
+      padding-right: 5%;
+      color: var(--lightCyan);
+      font-size: var(--fontSize);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--darkGrayishBlue);
+      border-radius: 10px;
+      margin-top: -5%;
+    }
+
+    .mainWrapper p:nth-of-type(1) {
+      color: var(--neonGreen);
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 10%;
+      word-spacing: 10px;
+    }
+
+    .mainWrapper div {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 45%;
+      width: 100%;
+
+    }
+
+    .mainWrapper button {
+      background-color: var(--neonGreen);
+      border-radius: 50%;
+      width: 5vh;
+      height: 5vh;
+      padding: 5%;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: -5%;
+
+    }
+
+    .mainWrapper button:hover,
+    .mainWrapper button:focus {
+      box-shadow: 1px 1px 20px var(--neonGreen);
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 375px) {
+      .mainWrapper {
+        width: 80%;
+        margin-top: -20%;
+      }
+
+      .mainWrapper>img {
+        width: 90%;
+      }
+
+      .mainWrapper button {
+        padding: 10%;
+        margin-bottom: -10%;
+      }
+      .mainWrapper div{
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="mainWrapper">
+      <p> advice #<span id="adviceNumber"></span></p>
+      <div id="adviceContent"></div>
+      <img src="images\pattern-divider-desktop.svg">
+      <button onclick="newAdvice()"><img src='images\icon-dice.svg'></button>
+    </div>
+  </div>
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">Pascu Ioana-Georgia</a>.
+  </div>
+  <script>
+
+    fetch('https://api.adviceslip.com/advice')
+      .then(data => data.json())
+      .then(dataDone => {
+        console.log(dataDone.slip)
+        adviceNumber.innerHTML = dataDone.slip.id
+        adviceContent.innerHTML = dataDone.slip.advice
+      })
+    function newAdvice() {
+      let randomNumber = Math.floor(Math.random() * (500 - 1) + 1);
+      console.log(randomNumber)
+      fetch(`https://api.adviceslip.com/advice/${randomNumber}`)
+        .then(data => data.json())
+        .then(dataDone => {
+          console.log(dataDone)
+          adviceNumber.innerHTML = dataDone.slip.id
+          adviceContent.innerHTML = dataDone.slip.advice
+        })
+        .catch(err =>
+          newAdvice()
+        )
+    }
+  </script>
+
+
+</body>
+
+</html>
